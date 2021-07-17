@@ -104,18 +104,27 @@ const form = document.querySelector('form');
 const nameField = document.querySelector('#name');
 const emailField = document.querySelector('#email');
 const verifyEmail = new RegExp("[a-zA-Z0-9._]+@[a-zA-Z0-9]+.(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)"); // RegExp for email validation is a modified version of the regexp found here: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email#validation
+const verifyCardNum = new RegExp()
+const activities = Array.from(document.querySelectorAll('#activities-box input'));
+console.log(activities.some((input) => input.checked));
 
 form.addEventListener('submit', (e) =>{
-    
-    if (nameField.value === ''){
-        nameField.classList.add("not-valid");
+    if(nameField.value === ''){
+        nameField.classList.add('not-valid');
         e.preventDefault();
     }
-    if (!verifyEmail.test(emailField.value)){
-        console.log(verifyEmail.test(emailField.value))
+    else if(!verifyEmail.test(emailField.value)){
+        emailField.classList.add('not-valid');
         e.preventDefault();
-        emailField.style.border = "1px solid red";
+    }
+    else if(activities.some((input) => input.checked)){ //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some
+        activitiesbox.classList.add('not-valid');
+        console.log('hi');
+        e.preventDefault();
+    }
+    else if(paymentMethods.value === 'credit-card'){
+        if()
+        e.preventDefault();
     }
     
-
 })
