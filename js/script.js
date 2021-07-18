@@ -15,7 +15,7 @@ jobSelect.addEventListener('change', () => {
     if (jobSelect.value === "other"){
         otherJobInput.style.display = 'inline';
     }
-    else {
+    else {wwwwww
         otherJobInput.style.display = 'none';
     }
 });
@@ -100,31 +100,43 @@ paymentMethods.addEventListener('change', () =>{
 
 // From Validation
 
+const error = function (domElement){
+    domElement.classList.add('not-valid');
+    domElement.classList.add('error-border');
+}
+
 const form = document.querySelector('form');
 const nameField = document.querySelector('#name');
 const emailField = document.querySelector('#email');
 const verifyEmail = new RegExp("[a-zA-Z0-9._]+@[a-zA-Z0-9]+.(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)"); // RegExp for email validation is a modified version of the regexp found here: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email#validation
-const verifyCardNum = new RegExp()
+const verifyCardNum = new RegExp("^[0-9]*$") //https://stackoverflow.com/questions/19715303/regex-that-accepts-only-numbers-0-9-and-no-characters
 const activities = Array.from(document.querySelectorAll('#activities-box input'));
-console.log(activities.some((input) => input.checked));
+const cardNum = document.querySelector('#cc-num');
+
+// cardNum.value = 'abcd';
+// console.log(verifyCardNum.test(cardNum.value));
+
+// 
+console.log(cardNum.value);
 
 form.addEventListener('submit', (e) =>{
     if(nameField.value === ''){
-        nameField.classList.add('not-valid');
+        error(nameField);
         e.preventDefault();
     }
     else if(!verifyEmail.test(emailField.value)){
-        emailField.classList.add('not-valid');
+       error(emailField);
         e.preventDefault();
     }
-    else if(activities.some((input) => input.checked)){ //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some
-        activitiesbox.classList.add('not-valid');
-        console.log('hi');
-        e.preventDefault();
-    }
-    else if(paymentMethods.value === 'credit-card'){
-        if()
-        e.preventDefault();
-    }
+    // else if(activities.some((input) => input.checked = true)){ //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some
+    //     activitiesbox.classList.add('not-valid');
+    //     console.log('hi');
+    //     e.preventDefault();
+    // }
     
+    else if(cardNum.value == '' || verifyCardNum.test(cardNum.value) === false || cardNum.value.length < 13 || cardNum.value.length > 16){
+        e.preventDefault();
+        error(cardNum);
+    }
 })
+
