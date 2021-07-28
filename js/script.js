@@ -105,6 +105,25 @@ const error = function (domElement){
     domElement.classList.add('error-border');
 }
 
+const clearError = () => {
+    const allNodes = document.body.getElementsByTagName("*"); //https://stackoverflow.com/questions/12823264/get-all-elements-in-the-body-tag-using-pure-javascript
+    for (node of allNodes){
+        const nodeClasslist = node.classList;
+        nodeClasslist.remove('not-valid', 'error-border');
+    }
+}
+
+const isChecked = function (inputList) {
+    let somethingChecked = false;
+    for (let input of inputList){
+        if (input.checked){
+            somethingChecked = true;
+            break;
+        }
+    }
+    return somethingChecked;
+}
+
 const form = document.querySelector('form');
 const nameField = document.querySelector('#name');
 const emailField = document.querySelector('#email');
@@ -112,14 +131,14 @@ const verifyEmail = new RegExp("[a-zA-Z0-9._]+@[a-zA-Z0-9]+.(?:\.[a-zA-Z0-9](?:[
 const verifyCardNum = new RegExp("^[0-9]*$") //https://stackoverflow.com/questions/19715303/regex-that-accepts-only-numbers-0-9-and-no-characters
 const activities = Array.from(document.querySelectorAll('#activities-box input'));
 const cardNum = document.querySelector('#cc-num');
+const cardZip = document.querySelector('#zip');
+const cardCVV = document.querySelector('#cvv');
 
-// cardNum.value = 'abcd';
-// console.log(verifyCardNum.test(cardNum.value));
+// console.log(isChecked(activities));
 
-// 
-console.log(cardNum.value);
 
 form.addEventListener('submit', (e) =>{
+    clearError();
     if(nameField.value === ''){
         error(nameField);
         e.preventDefault();
@@ -128,15 +147,22 @@ form.addEventListener('submit', (e) =>{
        error(emailField);
         e.preventDefault();
     }
-    // else if(activities.some((input) => input.checked = true)){ //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some
-    //     activitiesbox.classList.add('not-valid');
-    //     console.log('hi');
-    //     e.preventDefault();
-    // }
-    
-    else if(cardNum.value == '' || verifyCardNum.test(cardNum.value) === false || cardNum.value.length < 13 || cardNum.value.length > 16){
-        e.preventDefault();
+    else if(isChecked(activities) === false){ 
+        e.preventDefault(); 
+        error(activitiesBox);
+        
+    }
+    else if(cardNum.value == '' || !verifyCardNum.test(cardNum.value) || cardNum.value.length < 13 || cardNum.value.length > 16){
+        e.preventDefault(); 
         error(cardNum);
+    }
+    else if(cardZip.value == '' || !verifyCardNum.test(cardZip.value) || cardZip.value.length < 5 || cardZip.value.length > 5){
+        e.preventDefault(); 
+        error(cardZip);
+    }
+    else if(cardCVV.value == '' || !verifyCardNum.test(cardCVV.value) || cardCVV.value.length < 3 || cardCVV.value.length > 3){
+        e.preventDefault(); 
+        error(cardCVV);
     }
 })
 

@@ -25,13 +25,13 @@
           <legend>Basic Info</legend>
           
           <label for="name">Name: <span class="asterisk">*</span>
-            <input type="text" id="name" name="user-name" class="error-border">
+            <input type="text" id="name" name="user-name">
             <span id="name-hint" class="name-hint hint">Name field cannot be blank</span>
           </label>
           
           
           <label for="email">Email Address: <span class="asterisk">*</span>
-            <input type="email" id="email" name="user-email" class="error-border">
+            <input type="email" id="email" name="user-email">
             <span id="email-hint" class="email-hint hint">Email address must be formatted correctly</span>
           </label>
           
@@ -163,7 +163,7 @@
           <div class="expiration-box">
             <div class="month-box">
               <label for="exp-month">Expiration Date:</label>
-              <select id="exp-month" name="user-exp-month" class="error-border">
+              <select id="exp-month" name="user-exp-month">
                 <option hidden>Select Date</option>
                 <option value="1">01 - January</option>
                 <option value="2">02 - February</option>
@@ -182,7 +182,7 @@
 
             <div class="year-box">
               <label for="exp-year">Expiration Year:</label>
-              <select id="exp-year" name="user-exp-year" class="error-border">
+              <select id="exp-year" name="user-exp-year">
                 <option hidden>Select Year</option>
                 <option value="2021">2021</option>
                 <option value="2022">2022</option>
@@ -196,21 +196,21 @@
           <div class="credit-card-box">
             <div class="num-box">
               <label for="cc-num">Card Number: <span class="asterisk">*</span>
-                <input id="cc-num" name="user-cc-num" type="text" class="error-border">
+                <input id="cc-num" name="user-cc-num" type="text">
                 <span id="cc-hint" class="cc-hint hint">Credit card number must be between 13 - 16 digits</span>
               </label>
             </div>
 
             <div class="zip-box">
               <label for="zip">Zip Code: <span class="asterisk">*</span>
-                <input id="zip" name="user-zip" type="text" class="error-border">
+                <input id="zip" name="user-zip" type="text">
                 <span id="zip-hint" class="zip-hint hint">Zip Code must be 5 digits</span>
               </label>
             </div>
 
             <div class="cvv-box">
               <label for="cvv">CVV: <span class="asterisk">*</span>
-                <input id="cvv" name="user-cvv" type="text" class="error-border">
+                <input id="cvv" name="user-cvv" type="text">
                 <span id="cvv-hint" class="cvv-hint hint">CVV must be 3 digits</span>
               </label>
             </div>

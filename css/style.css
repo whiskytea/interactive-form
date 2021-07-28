@@ -237,7 +237,7 @@ button:hover {
   color: red;
 }
 
-.not-valid .error-border {
+.not-valid, .error-border {
   border: 1px solid red;
 }
 
