@@ -1,26 +1,32 @@
-const nameInput = document.querySelector('#name');
-const otherJobInput = document.querySelector('#other-job-role');
-const jobSelect = document.querySelector("select#title")
-const shirtColorList = document.querySelector('#color');
-const shirtList = document.querySelector('#design');
+//I'm guessing one would normally declare all their variables at the very beginning of the script. Since this is a homework assignment
+//split into sections, it just made more sense to declare variables to each section in the same block of code as the rest of that section.
 
-//name field requirement
+
+//Name Field Section
+const nameInput = document.querySelector('#name');
+
 document.addEventListener('DOMContentLoaded', () => {
     nameInput.focus();
 });
 
-//job role requirement
+//Job Role Section
+const otherJobInput = document.querySelector('#other-job-role');
+const jobSelect = document.querySelector("select#title")
+
 otherJobInput.style.display = 'none';
 jobSelect.addEventListener('change', () => {
     if (jobSelect.value === "other"){
         otherJobInput.style.display = 'inline';
     }
-    else {wwwwww
+    else {
         otherJobInput.style.display = 'none';
     }
 });
 
-//t-shirt Info requirement
+//T-shirt Info Section
+const shirtColorList = document.querySelector('#color');
+const shirtList = document.querySelector('#design');
+
 shirtColorList.disabled = true; //https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement/disabled
 shirtList.addEventListener('change', () => {
     shirtColorList.disabled = false;
@@ -98,17 +104,28 @@ paymentMethods.addEventListener('change', () =>{
     }
 })
 
-// From Validation
+// From Validation and Accessibility Section
 
 const error = function (domElement){ //function that adds the form validation visualization
-    domElement.parentElement.classList.add('not-valid');   
+    domElement.parentElement.classList.add('not-valid');
+    domElement.parentElement.classList.remove('valid');   
+    domElement.parentElement.lastElementChild.style.display = "inline";
+}
+
+const valid = (domElement) => { 
+    domElement.parentElement.classList.add('valid');
+    domElement.classList.remove('error-border');  
 }
 
 const clearError = () => { //clears the form validation error visualizations. error visualizations will be readded as needed
     const allNodes = document.body.getElementsByTagName("*"); //https://stackoverflow.com/questions/12823264/get-all-elements-in-the-body-tag-using-pure-javascript
     for (node of allNodes){
         const nodeClasslist = node.classList;
-        nodeClasslist.remove('not-valid', 'error-border');
+        if(nodeClasslist.contains('not-valid')){
+            nodeClasslist.remove('not-valid', 'error-border');
+            node.lastElementChild.style.display = "none";
+        }
+        
     }
 }
 
@@ -124,40 +141,70 @@ const isChecked = function (inputList) {
     return somethingChecked;
 }
 
-const checkNameField = (e) => {
+const checkNameField = (e = null) => {
     if(nameField.value === ''){
-        e.preventDefault();
+        if (e !== null){
+            e.preventDefault();
+        };
         error(nameField);
     }
+    else{
+        valid(nameField);
+    }
 };
-const checkEmailField = (e) => {
+const checkEmailField = (e = null) => {
     if(!verifyEmail.test(emailField.value)){
-        e.preventDefault();
+        if (e !== null){
+            e.preventDefault();
+        };
         error(emailField);
     }
+    else{
+        valid(emailField);
+    }
 };
-const checkActivities = (e) => {
+const checkActivities = (e = null) => {
     if(isChecked(activities) === false){ 
-        e.preventDefault(); 
+        if (e !== null){
+            e.preventDefault();
+        }; 
         error(activitiesBox); 
     }
+    else{
+        valid(activitiesBox);
+    }
 };
-const checkCardNum = (e) => {
+const checkCardNum = (e = null) => {
     if(cardNum.value == '' || !verifyCardNum.test(cardNum.value) || cardNum.value.length < 13 || cardNum.value.length > 16){
-        e.preventDefault(); 
+        if (e !== null){
+            e.preventDefault();
+        }; 
         error(cardNum);
     }
-};
-const checkCardZip = (e) => {
-    if(cardZip.value == '' || !verifyCardNum.test(cardZip.value) || cardZip.value.length < 5 || cardZip.value.length > 5){
-        e.preventDefault(); 
-        error(cardZip);
+    else{
+        valid(cardNum);
     }
 };
-const checkCardCVV = (e) => {
+const checkCardZip = (e = null) => {
+    if(cardZip.value == '' || !verifyCardNum.test(cardZip.value) || cardZip.value.length < 5 || cardZip.value.length > 5){
+        if (e !== null){
+            e.preventDefault();
+        }; 
+        error(cardZip);
+    }
+    else{
+        valid(cardZip);
+    }
+};
+const checkCardCVV = (e = null) => {
     if(cardCVV.value == '' || !verifyCardNum.test(cardCVV.value) || cardCVV.value.length < 3 || cardCVV.value.length > 3){
-        e.preventDefault(); 
+        if (e !== null){
+            e.preventDefault();
+        }; 
         error(cardCVV);
+    }
+    else{
+        valid(cardCVV);
     }
 };
 
@@ -184,11 +231,41 @@ form.addEventListener('submit', (e) =>{
     checkCardCVV(e);  
 }) 
 
-// Accessibility
+//real time form validation - checks only when the user switches focus off of an element - does not check activities section
+nameField.addEventListener('blur', () => {
+    clearError();
+    checkNameField();
+});
+emailField.addEventListener('blur', () => {
+    clearError();
+    checkEmailField();
+});
+cardNum.addEventListener('blur', () => {
+    clearError();
+    checkCardNum();
+});
+cardZip.addEventListener('blur', () => {
+    clearError();
+    checkCardZip();
+});
+cardCVV.addEventListener('blur', () => {
+    clearError();
+    checkCardCVV();
+});
 
-//add event listener - focus in
-//collect all the checkboxes, which I've already done
-//add eventListener to all the boxes that say if focused -> add focus class
-//add eventListener to all the boxes that say if blur out -> remove focus class
+for (let activity of activities){
+    activity.addEventListener('focus', () => {
+        activity.parentElement.classList.add('focus');
+    });
+    activity.addEventListener('blur', () => {
+        activity.parentElement.classList.remove('focus');
+    });
+}
 
+//extra
+//I don't like that the .error-border class stays on the expiration date fields when you select options, so this code removes it after focus out
+const cardExpMonth = document.querySelector('#exp-month');
+const cardExpYear = document.querySelector('#exp-year');
 
+cardExpMonth.addEventListener('blur', () => {cardExpMonth.classList.remove('error-border')});
+cardExpYear.addEventListener('blur', () => {cardExpYear.classList.remove('error-border')});

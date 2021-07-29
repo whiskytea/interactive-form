@@ -1,0 +1,5 @@
+This is the third project of the Full Stack Javascript TechDegree Program
+The Third Unit Project is an interactive form that has the student writing code to cover the following:
+ - Writing eventListeners that center around 'focus', 'blur', 'submit'
+ - Validating form entries
+ - Accessibility through the adding and removing of classes that increase Accessibility of the form elements
