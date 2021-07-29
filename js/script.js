@@ -100,12 +100,11 @@ paymentMethods.addEventListener('change', () =>{
 
 // From Validation
 
-const error = function (domElement){
-    domElement.classList.add('not-valid');
-    domElement.classList.add('error-border');
+const error = function (domElement){ //function that adds the form validation visualization
+    domElement.parentElement.classList.add('not-valid');   
 }
 
-const clearError = () => {
+const clearError = () => { //clears the form validation error visualizations. error visualizations will be readded as needed
     const allNodes = document.body.getElementsByTagName("*"); //https://stackoverflow.com/questions/12823264/get-all-elements-in-the-body-tag-using-pure-javascript
     for (node of allNodes){
         const nodeClasslist = node.classList;
@@ -113,6 +112,7 @@ const clearError = () => {
     }
 }
 
+//all the helper functions
 const isChecked = function (inputList) {
     let somethingChecked = false;
     for (let input of inputList){
@@ -124,6 +124,45 @@ const isChecked = function (inputList) {
     return somethingChecked;
 }
 
+const checkNameField = (e) => {
+    if(nameField.value === ''){
+        e.preventDefault();
+        error(nameField);
+    }
+};
+const checkEmailField = (e) => {
+    if(!verifyEmail.test(emailField.value)){
+        e.preventDefault();
+        error(emailField);
+    }
+};
+const checkActivities = (e) => {
+    if(isChecked(activities) === false){ 
+        e.preventDefault(); 
+        error(activitiesBox); 
+    }
+};
+const checkCardNum = (e) => {
+    if(cardNum.value == '' || !verifyCardNum.test(cardNum.value) || cardNum.value.length < 13 || cardNum.value.length > 16){
+        e.preventDefault(); 
+        error(cardNum);
+    }
+};
+const checkCardZip = (e) => {
+    if(cardZip.value == '' || !verifyCardNum.test(cardZip.value) || cardZip.value.length < 5 || cardZip.value.length > 5){
+        e.preventDefault(); 
+        error(cardZip);
+    }
+};
+const checkCardCVV = (e) => {
+    if(cardCVV.value == '' || !verifyCardNum.test(cardCVV.value) || cardCVV.value.length < 3 || cardCVV.value.length > 3){
+        e.preventDefault(); 
+        error(cardCVV);
+    }
+};
+
+//fetch all the form DOM elements needed
+
 const form = document.querySelector('form');
 const nameField = document.querySelector('#name');
 const emailField = document.querySelector('#email');
@@ -134,35 +173,22 @@ const cardNum = document.querySelector('#cc-num');
 const cardZip = document.querySelector('#zip');
 const cardCVV = document.querySelector('#cvv');
 
-// console.log(isChecked(activities));
-
-
+//submit form validation checks
 form.addEventListener('submit', (e) =>{
     clearError();
-    if(nameField.value === ''){
-        error(nameField);
-        e.preventDefault();
-    }
-    else if(!verifyEmail.test(emailField.value)){
-       error(emailField);
-        e.preventDefault();
-    }
-    else if(isChecked(activities) === false){ 
-        e.preventDefault(); 
-        error(activitiesBox);
-        
-    }
-    else if(cardNum.value == '' || !verifyCardNum.test(cardNum.value) || cardNum.value.length < 13 || cardNum.value.length > 16){
-        e.preventDefault(); 
-        error(cardNum);
-    }
-    else if(cardZip.value == '' || !verifyCardNum.test(cardZip.value) || cardZip.value.length < 5 || cardZip.value.length > 5){
-        e.preventDefault(); 
-        error(cardZip);
-    }
-    else if(cardCVV.value == '' || !verifyCardNum.test(cardCVV.value) || cardCVV.value.length < 3 || cardCVV.value.length > 3){
-        e.preventDefault(); 
-        error(cardCVV);
-    }
-})
+    checkNameField(e);
+    checkEmailField(e);
+    checkActivities(e);
+    checkCardNum(e);
+    checkCardZip(e)
+    checkCardCVV(e);  
+}) 
+
+// Accessibility
+
+//add event listener - focus in
+//collect all the checkboxes, which I've already done
+//add eventListener to all the boxes that say if focused -> add focus class
+//add eventListener to all the boxes that say if blur out -> remove focus class
+
 
