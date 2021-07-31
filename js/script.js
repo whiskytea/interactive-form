@@ -153,10 +153,17 @@ const checkNameField = (e = null) => {
     }
 };
 const checkEmailField = (e = null) => {
-    if(!verifyEmail.test(emailField.value)){
+    if (emailField.value === ''){
+        if (e !== null){
+            e.preventDefault();
+        };  
+        error(emailField);
+    }
+    else if(!verifyEmail.test(emailField.value)){
         if (e !== null){
             e.preventDefault();
         };
+        emailHint.textContent = "The email address is formatted incorrectly."; //Extra Credit - conditional validation hint
         error(emailField);
     }
     else{
@@ -213,9 +220,11 @@ const checkCardCVV = (e = null) => {
 const form = document.querySelector('form');
 const nameField = document.querySelector('#name');
 const emailField = document.querySelector('#email');
+const emailHint = document.querySelector('#email-hint');
 const verifyEmail = new RegExp("[a-zA-Z0-9._]+@[a-zA-Z0-9]+.(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)"); // RegExp for email validation is a modified version of the regexp found here: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email#validation
 const verifyCardNum = new RegExp("^[0-9]*$") //https://stackoverflow.com/questions/19715303/regex-that-accepts-only-numbers-0-9-and-no-characters
 const activities = Array.from(document.querySelectorAll('#activities-box input'));
+const paymentMethod = document.querySelector('#payment');
 const cardNum = document.querySelector('#cc-num');
 const cardZip = document.querySelector('#zip');
 const cardCVV = document.querySelector('#cvv');
@@ -226,12 +235,16 @@ form.addEventListener('submit', (e) =>{
     checkNameField(e);
     checkEmailField(e);
     checkActivities(e);
-    checkCardNum(e);
-    checkCardZip(e)
-    checkCardCVV(e);  
+    if (paymentMethod === 'Credit Card'){
+        checkCardNum(e);
+        checkCardZip(e)
+        checkCardCVV(e);
+    } 
 }) 
 
-//real time form validation - checks only when the user switches focus off of an element - does not check activities section
+//Extra Credit:real time form validation - checks only when the user switches focus off of an element
+//Does not check activities section
+
 nameField.addEventListener('blur', () => {
     clearError();
     checkNameField();
@@ -260,9 +273,27 @@ for (let activity of activities){
     activity.addEventListener('blur', () => {
         activity.parentElement.classList.remove('focus');
     });
+    activity.addEventListener('input', () =>{
+        const schedule = [];
+        
+        //grab all the dates and times and put them in an array, also renable options
+        for (let option of activities){
+            option.parentElement.classList.remove('disabled');
+            if (option.checked){
+                schedule.push(option.dataset.dayAndTime);
+            }
+        }
+        //now disable all the conflicting options
+        for (let item of activities){
+            if (schedule.includes(item.dataset.dayAndTime)){
+                if(!item.checked){
+                    item.parentElement.classList.add("disabled");
+                }
+            }
+        }
+    })
 }
 
-//extra
 //I don't like that the .error-border class stays on the expiration date fields when you select options, so this code removes it after focus out
 const cardExpMonth = document.querySelector('#exp-month');
 const cardExpYear = document.querySelector('#exp-year');

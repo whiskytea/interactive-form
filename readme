@@ -3,3 +3,43 @@ The Third Unit Project is an interactive form that has the student writing code 
  - Writing eventListeners that center around 'focus', 'blur', 'submit'
  - Validating form entries
  - Accessibility through the adding and removing of classes that increase Accessibility of the form elements
+
+Extra Credit:
+Prevent users from registering for conflicting activities
+    An event listener checks for an input change and then executes the following code block
+    1. Remove all disabled classes in the activities to "reset the board"
+    2. Loop through all the checked activity inputs and add the dataset to an array
+    3. Loop through all the checked activities and add the "disabled" class to the parent if the timeframe is already selected
+    Code Block:
+        activity.addEventListener('input', () =>{
+            const schedule = [];
+            
+            //grab all the dates and times and put them in an array, also renable options
+            for (let option of activities){
+                option.parentElement.classList.remove('disabled');
+                if (option.checked){
+                    schedule.push(option.dataset.dayAndTime);
+                }
+            }
+            //now disable all the conflicting options
+            for (let item of activities){
+                if (schedule.includes(item.dataset.dayAndTime)){
+                    if(!item.checked){
+                        item.parentElement.classList.add("disabled");
+                    }
+                }
+            }
+        })
+ 
+
+Live Form Validation - all the required inputs accept activites validate in real time.
+    They have event listeners that use the same functions as the form submission validation.
+    Example:
+        nameField.addEventListener('blur', () => {
+            clearError();
+            checkNameField();
+        });
+
+Conditional Form Validation - I chose the email field
+    If the email field is blank -> the hint shown is the default messaging
+    If the email field has at least one character in it (a "space" counts) -> advise that the email is invalid and offers suggestions
