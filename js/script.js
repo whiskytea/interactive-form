@@ -24,7 +24,7 @@ jobSelect.addEventListener('change', () => {
 });
 
 //T-shirt Info Section
-const shirtColorList = document.querySelector('#color');
+const shirtColorList = document.querySelector('#color')
 const shirtList = document.querySelector('#design');
 
 shirtColorList.disabled = true; //https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement/disabled
@@ -33,15 +33,14 @@ shirtList.addEventListener('change', () => {
     if (shirtList.value === "js puns"){
         shirtColorList.style.display = 'inline';
         for (let color of shirtColorList.children) { //hide
-            if (color.dataset.theme !== 'js puns'){
+            if (color.dataset.theme === 'heart js'){
                 color.style.display = 'none';
             }
             else if(color.dataset.theme){
                 color.style.display = 'inline';
             }
         }
-    }
-    else {
+    } else {
         shirtColorList.style.display = 'inline';
         for (let color of shirtColorList.children) {
             if (color.dataset.theme === 'js puns'){
@@ -52,7 +51,6 @@ shirtList.addEventListener('change', () => {
             }
         }
     }
-    shirtColorList.value = "choose a color";
 });
 
 //"Register for Activites" section
@@ -235,7 +233,7 @@ form.addEventListener('submit', (e) =>{
     checkNameField(e);
     checkEmailField(e);
     checkActivities(e);
-    if (paymentMethod === 'Credit Card'){
+    if (paymentMethod.value === 'credit-card'){
         checkCardNum(e);
         checkCardZip(e)
         checkCardCVV(e);
